@@ -1,0 +1,1 @@
+# Circular Menu Vue Component (Uzbek)
