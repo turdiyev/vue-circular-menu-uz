@@ -1,0 +1,17 @@
+{
+  "name": "vue-circular-menu-uz",
+  "version": "1.0.0",
+  "description": "Uzbek circular menu vue component",
+  "main": "./src/main.js",
+  "author": "Sherali Turdiyev",
+  "license": "MIT",
+  "scripts": {
+    "dev":"webpack-dev-server --open --hot",
+    "build":"webpack --mode production --progress --hide-modules"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
