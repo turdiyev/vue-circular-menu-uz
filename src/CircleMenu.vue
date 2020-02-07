@@ -7,7 +7,9 @@
             <a href class="fa fa-linkedin "></a>
         </div>
 
-        <a href="#" ref="menuButton" class="menu-button fa fa-bars fa-2x"></a>
+        <a href="#" ref="menuButton" class="menu-button fa fa-bars fa-2x"
+        :style="mainButtonStyle"
+        ></a>
     </nav>
 </template>
 
@@ -16,11 +18,11 @@
         props: {
             radius: {
                 type: Number,
-                default: 100
+                default: 140
             },
             innerRadius: {
                 type: Number,
-                default: 70
+                default: 100
             },
             isHalfCircle: {
                 type: Boolean,
@@ -29,7 +31,6 @@
 
         },
         data: () => {
-
             return {}
         },
 
@@ -84,6 +85,12 @@
                 return {
                     width: this.circleSize + 'px',
                     height: this.circleSize + 'px'
+                }
+            },
+            mainButtonStyle() {
+                return {
+                    width: this.circleSize/3 + 'px',
+                    height: this.circleSize/3 + 'px'
                 }
             }
         }
@@ -146,8 +153,9 @@
 
     .menu-button {
         position: absolute;
-        top: calc(50% - 40px);
-        left: calc(50% - 40px);
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%);
         text-decoration: none;
         text-align: center;
         color: #444;
