@@ -1,113 +1,169 @@
 <template>
-  <nav class="circular-menu">
-    <div class="circle">
-      <a href class="fa fa-home fa-2x"></a>
-      <a href class="fa fa-facebook fa-2x"></a>
-      <a href class="fa fa-twitter fa-2x"></a>
-      <a href class="fa fa-linkedin fa-2x"></a>
-      <a href class="fa fa-github fa-2x"></a>
-      <a href class="fa fa-rss fa-2x"></a>
-      <a href class="fa fa-pinterest fa-2x"></a>
-      <a href class="fa fa-asterisk fa-2x"></a>
-    </div>
+    <nav class="circular-menu" ref="menuWrapper" :style="circleSizeStyle">
+        <div class="circle">
+            <a href class="fa fa-home "></a>
+            <a href class="fa fa-facebook "></a>
+            <a href class="fa fa-twitter "></a>
+            <a href class="fa fa-linkedin "></a>
+        </div>
 
-    <a href="#" ref="menuButton" class="menu-button fa fa-bars fa-2x"></a>
-  </nav>
+        <a href="#" ref="menuButton" class="menu-button fa fa-bars fa-2x"></a>
+    </nav>
 </template>
 
 <script>
-export default {
-  data: () => {},
-  mounted() {
-    const items = document.querySelectorAll(".circle a");
+    export default {
+        props: {
+            radius: {
+                type: Number,
+                default: 100
+            },
+            innerRadius: {
+                type: Number,
+                default: 70
+            },
+            isHalfCircle: {
+                type: Boolean,
+                default: true
+            },
 
-    for (var i = 0, l = items.length; i < l; i++) {
-      items[i].style.left =
-        (
-          50 -
-          35 * Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
-        ).toFixed(4) + "%";
+        },
+        data: () => {
 
-      items[i].style.top =
-        (
-          50 +
-          35 * Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
-        ).toFixed(4) + "%";
-    }
+            return {}
+        },
 
-    document.querySelector(".menu-button").onclick = function(e) {
-      e.preventDefault();
-      document.querySelector(".circle").classList.toggle("open");
+        mounted() {
+            const {radius, innerRadius, isHalfCircle} = this;
+
+            const items = document.querySelectorAll(".circle a");
+            const halfSizePercentage = 50;
+            const smallRadiusPersentage = (innerRadius * 100) / radius / 2
+            console.log(halfSizePercentage, smallRadiusPersentage, this)
+            if (isHalfCircle) {
+                for (var i = 0, len = items.length; i < len; i++) {
+                    items[i].style.left =
+                        (
+                            halfSizePercentage -
+                            smallRadiusPersentage * Math.cos(-Math.PI * (1 + 2 * i) / 8)
+                        ).toFixed(4) + "%";
+
+                    items[i].style.top =
+                        (
+                            halfSizePercentage +
+                            smallRadiusPersentage * Math.sin(-Math.PI * (1 + 2 * i) / 8)
+                        ).toFixed(4) + "%";
+                }
+            } else {
+                for (var i = 0, l = items.length; i < l; i++) {
+                    items[i].style.left =
+                        (
+                            halfSizePercentage -
+                            smallRadiusPersentage * Math.cos(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
+                        ).toFixed(4) + "%";
+
+                    items[i].style.top =
+                        (
+                            halfSizePercentage +
+                            smallRadiusPersentage * Math.sin(-0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)
+                        ).toFixed(4) + "%";
+                }
+
+            }
+
+            document.querySelector(".menu-button").onclick = function (e) {
+                e.preventDefault();
+                document.querySelector(".circle").classList.toggle("open");
+            };
+        },
+        computed: {
+            circleSize() {
+                return 2 * this.radius
+            },
+            circleSizeStyle() {
+                return {
+                    width: this.circleSize + 'px',
+                    height: this.circleSize + 'px'
+                }
+            }
+        }
     };
-  }
-};
 </script>
 
-<style scoped>
-@import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css";
+<style>
+    @import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css";
+    body{
+        background: #000;
+    }
+    .circular-menu {
+        margin: 0 auto;
+        position: fixed;
+        bottom:0;
+        left:50%;
+        transform: translate(0, 50%);
+    }
 
-.circular-menu {
-  width: 250px;
-  height: 250px;
-  margin: 0 auto;
-  position: relative;
-}
+    .circle {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        background: rgba(255,255,255, 0.5);
 
-.circle {
-  width: 250px;
-  height: 250px;
-  opacity: 0;
-  border: 1px solid;
-  border-radius: 50%;
-  -webkit-transform: scale(0);
-  -moz-transform: scale(0);
-  transform: scale(0);
-  -webkit-transition: all 0.4s ease-out;
-  -moz-transition: all 0.4s ease-out;
-  transition: all 0.4s ease-out;
-}
+        opacity: 0;
+        border: 1px solid;
+        border-radius: 50%;
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        transform: scale(0);
+        -webkit-transition: all 0.4s ease-out;
+        -moz-transition: all 0.4s ease-out;
+        transition: all 0.4s ease-out;
+    }
 
-.open.circle {
-  opacity: 1;
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-  transform: scale(1);
-}
+    .open.circle {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        transform: scale(1);
+    }
 
-.circle a {
-  text-decoration: none;
-  /* color: white; */
-  display: block;
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
-  margin-left: -20px;
-  margin-top: -20px;
-  position: absolute;
-  text-align: center;
-}
+    .circle a {
+        text-decoration: none;
+        /* color: white; */
+        display: block;
+        height: 40px;
+        width: 40px;
+        line-height: 40px;
+        margin-left: -20px;
+        margin-top: -20px;
+        position: absolute;
+        text-align: center;
+    }
 
-.circle a:hover {
-  color: #eef;
-}
+    .circle a:hover {
+        color: #eef;
+    }
 
-.menu-button {
-  position: absolute;
-  top: calc(50% - 30px);
-  left: calc(50% - 30px);
-  text-decoration: none;
-  text-align: center;
-  color: #444;
-  border-radius: 50%;
-  display: block;
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
-  padding: 10px;
-  background: #dde;
-}
+    .menu-button {
+        position: absolute;
+        top: calc(50% - 40px);
+        left: calc(50% - 40px);
+        text-decoration: none;
+        text-align: center;
+        color: #444;
+        border-radius: 50%;
+        -webkit-box-shadow:  1px 1px 1px rgba(0,0,0,0.5);
+        -moz-box-shadow:  1px 1px 1px rgba(0,0,0,0.5);
+        box-shadow:  1px 1px 1px rgba(0,0,0,0.5);
+        display: block;
+        height: 60px;
+        width: 60px;
+        line-height: 40px;
+        padding: 10px;
+        background: #dde;
+    }
 
-.menu-button:hover {
-  background-color: #eef;
-}
+    .menu-button:hover {
+        background-color: #eef;
+    }
 </style>
